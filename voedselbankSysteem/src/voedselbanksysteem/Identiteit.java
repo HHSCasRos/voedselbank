@@ -15,4 +15,45 @@ public class Identiteit {
     private String uitgiftedatum;
     private String idSoort;
     private int eigenaar;
+
+    public int getBSN() {
+        return BSN;
+    }
+
+    public void setBSN(int BSN) {
+        this.BSN = BSN;
+    }
+
+    public String getPlaatsUitgifte() {
+        return plaatsUitgifte;
+    }
+
+    public void setPlaatsUitgifte(String plaatsUitgifte) {
+        this.plaatsUitgifte = plaatsUitgifte;
+    }
+
+    public String getUitgiftedatum() {
+        return uitgiftedatum;
+    }
+
+    public void setUitgiftedatum(String uitgiftedatum) {
+        this.uitgiftedatum = uitgiftedatum;
+    }
+
+    public String getIdSoort() {
+        return idSoort;
+    }
+
+    public void setIdSoort(String idSoort) {
+        this.idSoort = idSoort;
+    }
+
+    public int getEigenaar() {
+        return eigenaar;
+    }
+
+    public void setEigenaar(int eigenaar) {
+        this.eigenaar = eigenaar;
+    }
+    
 }

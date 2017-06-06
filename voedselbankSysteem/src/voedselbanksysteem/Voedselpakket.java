@@ -13,4 +13,29 @@ public class Voedselpakket {
     private int id;
     private String soort;
     private int uitgiftepunt;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getSoort() {
+        return soort;
+    }
+
+    public void setSoort(String soort) {
+        this.soort = soort;
+    }
+
+    public int getUitgiftepunt() {
+        return uitgiftepunt;
+    }
+
+    public void setUitgiftepunt(int uitgiftepunt) {
+        this.uitgiftepunt = uitgiftepunt;
+    }
+    
 }
