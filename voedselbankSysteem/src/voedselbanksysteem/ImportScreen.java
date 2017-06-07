@@ -5,6 +5,12 @@
  */
 package voedselbanksysteem;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFileChooser;
+
 /**
  *
  * @author Cas_Ros
@@ -88,12 +94,25 @@ public class ImportScreen extends javax.swing.JFrame {
 
     //browse button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        //create file browser
+        JFileChooser fc = new JFileChooser();
+        File file = fc.getCurrentDirectory();
+        int returnVal = fc.showDialog(fc, "Select");
+        
+        //get complete path to selected file
+        try {
+            String fullPath = file.getCanonicalPath();
+            jTextField1.setText(fullPath + fc.getSelectedFile());
+        } catch (IOException ex) {
+            
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //submit button
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        //send filepath to excelreader
+        ExcelReader er = new ExcelReader();
+        er.ExcelReader(jTextField1.getText());
         
         opener.setVisible(true);
         this.setVisible(false);
