@@ -24,10 +24,11 @@ import org.apache.poi.ss.usermodel.Row;
  */
 public class ExcelReader {
     
-    public static void main(String[] args) {
+    
+    public void ExcelReader(String path){
        
             try {
-        FileInputStream file = new FileInputStream(new File("C:\\Users\\FK\\Desktop\\ExcelReader\\Intakestatuslijst 23-03-2017_Anoniem(2).xls"));
+        FileInputStream file = new FileInputStream(new File("C:\\Users\\Calvin\\Desktop\\ExcelReader\\Intakestatuslijst 23-03-2017_Anoniem(2).xls"));
         
         //Create Workbook instance holding reference to .xlsx file
         HSSFWorkbook workbook = new HSSFWorkbook(file);
