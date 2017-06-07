@@ -5,6 +5,8 @@
  */
 package voedselbanksysteem;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author Cas_Ros
@@ -176,7 +178,13 @@ public class HomeScreen extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        ImportScreen is = new ImportScreen();
+        is.setVisible(true);
+        this.setVisible(false);
+        is.setOpener(this);
+        if(is == null){
+            is = new ImportScreen();
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
