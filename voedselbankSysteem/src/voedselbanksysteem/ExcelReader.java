@@ -26,17 +26,21 @@ public class ExcelReader {
             //Get first/desired sheet from the workbook
             HSSFSheet sheet = workbook.getSheetAt(0);
 
-            //Iterate through each rows one by one
+            //array containing the excelsheet
             Iterator<Row> rowIterator = sheet.iterator();
             
+            //skip fist few rows that dont contain information that needs to be processed
             for(int i = 1; i < 6; i++){
                 Row row = rowIterator.next();
             }
+            //Iterate through each rows one by one
             while (rowIterator.hasNext()){
                 Row row = rowIterator.next();
                 //For each row, iterate through all the columns
                 Iterator<Cell> cellIterator = row.cellIterator();
-                String sql = "INSERT INTO gegevens VALUES(";
+                
+                //create sql statement with excel information
+                String sql = "INSERT INTO temp VALUES(";
                 while (cellIterator.hasNext()){
                     Cell cell = cellIterator.next();
                     //Check the cell type after eveluating formulae
@@ -55,10 +59,11 @@ public class ExcelReader {
                             sql += "NULL, ";
                     }
                 }
-                //replace last "," with ")"
+                //replace last "," with ")" to fix the sql syntax
                 int index = sql.lastIndexOf(", ");
                 sql = sql.substring(0, index);
                 sql += ")";
+                
                 System.out.println(sql);
             }
             file.close();
