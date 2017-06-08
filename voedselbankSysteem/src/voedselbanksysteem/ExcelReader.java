@@ -3,6 +3,7 @@ package voedselbanksysteem;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -38,32 +39,32 @@ public class ExcelReader {
                 //For each row, iterate through all the columns
                 Iterator<Cell> cellIterator = row.cellIterator();
                 
-                //create sql statement with excel information
-                String sql = "INSERT INTO temp VALUES(";
+                ArrayList<String> velden = new ArrayList();
                 while (cellIterator.hasNext()){
                     Cell cell = cellIterator.next();
                     //Check the cell type after eveluating formulae
                     //If it is formula cell, it will be evaluated otherwise no change will happen
                     switch (evaluator.evaluateInCell(cell).getCellType()){
                         case Cell.CELL_TYPE_NUMERIC:
-                            sql += cell.getNumericCellValue() + ", ";
+                            velden.add(cell.getNumericCellValue() + ", ");
                             break;
                         case Cell.CELL_TYPE_STRING:
-                            sql += "'" + cell.getStringCellValue() + "', ";
+                            velden.add("'" + cell.getStringCellValue() + "', ");
                             break;
                         case Cell.CELL_TYPE_FORMULA:
                             //Not again
                             break;
                         case Cell.CELL_TYPE_BLANK:
-                            sql += "NULL, ";
+                            velden.add("NULL, ");
                     }
                 }
-                //replace last "," with ")" to fix the sql syntax
-                int index = sql.lastIndexOf(", ");
-                sql = sql.substring(0, index);
-                sql += ")";
+                String temp = velden.get(velden.size() - 1);
+                velden.remove(velden.size() - 1);
                 
-                System.out.println(sql);
+                temp.replace(',', ')');
+                
+                velden.add(temp);
+                JDBCDriver.Toevoegen(velden);
             }
             file.close();
         }
