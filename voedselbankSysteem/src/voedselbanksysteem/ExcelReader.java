@@ -28,6 +28,10 @@ public class ExcelReader {
 
             //Iterate through each rows one by one
             Iterator<Row> rowIterator = sheet.iterator();
+            
+            for(int i = 1; i < 6; i++){
+                Row row = rowIterator.next();
+            }
             while (rowIterator.hasNext()){
                 Row row = rowIterator.next();
                 //For each row, iterate through all the columns
@@ -51,6 +55,10 @@ public class ExcelReader {
                             sql += "NULL, ";
                     }
                 }
+                //replace last "," with ")"
+                int index = sql.lastIndexOf(", ");
+                sql = sql.substring(0, index);
+                sql += ")";
                 System.out.println(sql);
             }
             file.close();

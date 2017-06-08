@@ -96,16 +96,10 @@ public class ImportScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //create file browser
         JFileChooser fc = new JFileChooser();
-        File file = fc.getCurrentDirectory();
         int returnVal = fc.showDialog(fc, "Select");
         
         //get complete path to selected file
-        try {
-            String fullPath = file.getCanonicalPath();
-            jTextField1.setText(fullPath + fc.getSelectedFile());
-        } catch (IOException ex) {
-            
-        }
+        jTextField1.setText(fc.getSelectedFile().toString());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     //submit button
