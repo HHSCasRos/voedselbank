@@ -32,10 +32,10 @@ public class DatabaseSource {
       }
 
 
-      dbserver=" ";
-      database=" ";
-      username = " ";
-      password = " ";
+      dbserver="meru.hhs.nl:3306";
+      database="disco_db";
+      username = "15078132";
+      password = "cu4yi9Ahqu";
       
       
    }
