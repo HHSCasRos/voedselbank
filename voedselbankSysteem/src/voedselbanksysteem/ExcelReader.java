@@ -12,7 +12,6 @@ import org.apache.poi.ss.usermodel.Row;
 
 public class ExcelReader {
     
-    
     public void ExcelReader(String path){
        
         try {

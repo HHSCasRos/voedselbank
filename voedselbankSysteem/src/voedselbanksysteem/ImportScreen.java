@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -96,9 +97,10 @@ public class ImportScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         //create file browser
         JFileChooser fc = new JFileChooser();
+        fc.addChoosableFileFilter(new FileNameExtensionFilter("Excel files", "xlsx", "xls"));
         int returnVal = fc.showDialog(fc, "Select");
         
-        //get complete path to selected file
+        //get complete path to selected file and put it in the textfield
         jTextField1.setText(fc.getSelectedFile().toString());
     }//GEN-LAST:event_jButton1ActionPerformed
 
