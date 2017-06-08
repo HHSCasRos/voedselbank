@@ -112,7 +112,7 @@ public class ImportScreen extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         //send filepath to excelreader
         ExcelReader er = new ExcelReader();
-        er.ExcelReader(jTextField1.getText());
+        er.ExcelReader(jTextField1.getText().replace("\\", "/"));
         
         opener.setVisible(true);
         this.setVisible(false);
