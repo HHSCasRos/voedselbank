@@ -6,6 +6,8 @@
 package voedselbanksysteem;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
@@ -33,10 +35,55 @@ public class DatabaseSource {
 
 
       dbserver="meru.hhs.nl:3306";
-      database="disco_db";
+      database="15078132";
       username = "15078132";
       password = "cu4yi9Ahqu";
       
       
    }
+   
+   public static Connection getConnection() throws SQLException
+   {
+       if (activeConn==null) {
+           init();
+           activeConn=createConnection();
+       }
+       else {
+           if (!activeConn.isValid(0)) {
+               activeConn=createConnection();
+           }
+       }
+
+       return activeConn;
+
+   }
+
+   private static Connection createConnection() throws SQLException
+   {
+
+        String connectionString = "jdbc:mysql://" + dbserver + "/" + database + "?" +
+                "user=" + username + "&password=" + password;
+
+       return DriverManager.getConnection(connectionString);
+   }
+   
+   public static void closeConnection() {
+       if (activeConn!=null) {
+           try {
+                activeConn.close();
+           }
+           catch(SQLException e) {
+               //to catch and do nothing is the best option
+               //don't know how to recover from this exception
+               
+           }
+           finally {
+               activeConn=null;
+           }
+               
+       }
+       
+   }
 }
+
+
