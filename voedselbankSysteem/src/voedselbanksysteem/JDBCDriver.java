@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package voedselbanksysteem;
 
 import java.sql.Connection;
@@ -23,7 +18,7 @@ public class JDBCDriver {
             Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement();
-            String query = "INSERT INTO disco (";
+            String query = "INSERT INTO temp (";
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
