@@ -79,4 +79,13 @@ public class JDBCDriver {
             return uitgiftepunten;
         }
     }
+    public static ArrayList<ArrayList<String>> getDistributieLijst (int weeknr){
+        ArrayList<ArrayList<String>> DistributieLijst = new ArrayList ();
+        try{
+            Connection connection ();
+            connection = getConnection();
+            Statement sql = connection.createStatement ();
+            String query = "SELECT naam, sum(), sum() - sum (),sum () FROM ";
+        }
+    }
 }

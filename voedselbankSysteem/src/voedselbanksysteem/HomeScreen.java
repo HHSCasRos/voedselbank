@@ -70,6 +70,11 @@ public class HomeScreen extends javax.swing.JFrame {
         });
 
         jButton13.setText("Distributielijst");
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -140,6 +145,14 @@ public class HomeScreen extends javax.swing.JFrame {
             mcu = new MaxCapaciteitUitgiftepunt();
         }
     }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+           DistributieLijst dbl = new DistributieLijst();
+           dbl.setVisible(true);
+           this.setVisible(false);
+           dbl.setOpener(this);
+    }//GEN-LAST:event_jButton13ActionPerformed
 
     /**
      * @param args the command line arguments
