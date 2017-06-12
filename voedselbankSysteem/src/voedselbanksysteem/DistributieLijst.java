@@ -5,6 +5,10 @@
  */
 package voedselbanksysteem;
 
+import java.text.MessageFormat;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+
 /**
  *
  * @author FK
@@ -31,13 +35,13 @@ public class DistributieLijst extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabeldbl = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabeldbl.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -63,7 +67,7 @@ public class DistributieLijst extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tabeldbl);
 
         jButton1.setText("Refresh");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -117,6 +121,17 @@ public class DistributieLijst extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        
+        try {
+            MessageFormat header = new MessageFormat("Pagina header");
+            MessageFormat footer = new MessageFormat("Pagina 1, number, integer");
+            
+            tabeldbl.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e);
+                
+        }
+        
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
@@ -158,6 +173,6 @@ public class DistributieLijst extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tabeldbl;
     // End of variables declaration//GEN-END:variables
 }
