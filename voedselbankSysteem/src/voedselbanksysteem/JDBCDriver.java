@@ -79,13 +79,37 @@ public class JDBCDriver {
             return uitgiftepunten;
         }
     }
-    public static ArrayList<ArrayList<String>> getDistributieLijst (int weeknr){
+    public static ArrayList<ArrayList<String>> getDistributieLijst (int datum){
         ArrayList<ArrayList<String>> DistributieLijst = new ArrayList ();
+        int datumVorigeWeek = datum - 7;
         try{
-            Connection connection ();
+            Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement ();
-            String query = "SELECT naam, sum(), sum() - sum (),sum () FROM ";
+            String query = "SELECT naam, COUNT("
+                    + "SELECT Id FROM Cliënt WHERE status = 'actief'"
+                    + " AND startUitgifte < " + datumVorigeWeek
+                    + " AND datumStopzetting > " + datumVorigeWeek
+                + "), COUNT("
+                    + " SELECT Id FROM Cliënt WHERE status = 'actief'"
+                    + " AND startUitgifte < " + datum
+                    + " AND datumStopzetting > " + datum
+                + ") - sum(uitgiftepunt), sum(uitgiftepunt)"
+                + " FROM Uitgiftepunt JOIN Cliënt ON toegewezenUitgiftepunt = naam"
+                + " JOIN Intake ON cliënt = kaartnr"
+                + " WHERE status = 'actief'"
+                + " AND startUitgifte < " + datum
+                + " AND datumStopzetting > " + datum
+                + " GROUP BY naam";
+            ResultSet executeQuery = sql.executeQuery(query);
+            
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+        }
+        finally{
+            closeConnection();
+            return DistributieLijst;
         }
     }
 }
