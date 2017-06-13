@@ -12,24 +12,28 @@ import static voedselbanksysteem.DatabaseSource.*;
  * @author Cas_Ros
  */
 public class JDBCDriver {
-    public static void Toevoegen(ArrayList<String> velden) {
+    public static boolean Toevoegen(ArrayList<String> velden) {
         int aantal;
         
         try{
             Connection connection;
             connection = getConnection();
+            
             Statement sql = connection.createStatement();
             String query = "INSERT INTO temp (";
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
+            System.out.println(query);
             aantal = sql.executeUpdate(query);
         }
         catch(SQLException e){
             e.getStackTrace();
+            return false;
         }
         finally{
             closeConnection();
+            return true;
         }
     }
     
@@ -110,6 +114,32 @@ public class JDBCDriver {
         finally{
             closeConnection();
             return DistributieLijst;
+        }
+    }
+    
+    public static int getCliëntFromTemp(){
+        int aantal = 0;
+        ArrayList<String> cliënt = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            String query = "SELECT kaartnummer, naam, telefoonnummer, mobiel, email, naamPartner, adres, postcode, plaats FROM temp";
+            ResultSet executeQuery = sql.executeQuery(query);
+            cliënt.add(executeQuery.getString(1));
+            if(!executeQuery.isLast()){
+                executeQuery.next();
+                cliënt.add(executeQuery.getString(1));
+            }
+            
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+        }
+        finally{
+            closeConnection();
+            return aantal;
         }
     }
 }

@@ -34,7 +34,8 @@ public class ExcelReader {
                 Row row = rowIterator.next();
             }
             //Iterate through each rows one by one
-            while (rowIterator.hasNext()){
+            boolean succes = true;
+            while (rowIterator.hasNext() && succes == true){
                 Row row = rowIterator.next();
                 //For each row, iterate through all the columns
                 Iterator<Cell> cellIterator = row.cellIterator();
@@ -64,7 +65,10 @@ public class ExcelReader {
                 temp.replace(',', ')');
                 
                 velden.add(temp);
-                JDBCDriver.Toevoegen(velden);
+                succes = JDBCDriver.Toevoegen(velden);
+            }
+            if(succes == false){
+                System.out.println ("Er is iets mis met de informatie van de excelfile");
             }
             file.close();
         }
