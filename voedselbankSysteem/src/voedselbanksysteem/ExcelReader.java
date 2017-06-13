@@ -62,7 +62,7 @@ public class ExcelReader {
                 String temp = velden.get(velden.size() - 1);
                 velden.remove(velden.size() - 1);
                 
-                temp.replace(',', ')');
+                temp = temp.replace(',', ')');
                 
                 velden.add(temp);
                 succes = JDBCDriver.Toevoegen(velden);

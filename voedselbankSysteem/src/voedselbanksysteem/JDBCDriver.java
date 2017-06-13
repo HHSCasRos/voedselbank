@@ -20,7 +20,7 @@ public class JDBCDriver {
             connection = getConnection();
             
             Statement sql = connection.createStatement();
-            String query = "INSERT INTO temp (";
+            String query = "INSERT INTO temp (kaartnummer, naam, naamPartner, telefoonnummer, email, mobiel, aantalPersonen, aantalOnderNorm, gebruiktInMaanden, identiteitsbewijsSoort, datumUitgifteIndentiteitsbewijs, identiteitsnummer, plaatsUitgifteIdentiteitsbewijs, adres, postcode, plaats, status, intaker, intakedatum, startdatumUitgifte, datumHerintake, datumStopzetting, redenStopzetting, verwijzersDoor, verwijzersDoorContactpersoon, verwijzersDoorTelefoonnummer, verwijzersDoorEmail, verwijzersNaar, verwijzersNaarContactpersoon, verwijzersNaarTelefoonnummer, verwijzersNaarEmail, Uitgiftepunt, pakket) VALUES (";
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
