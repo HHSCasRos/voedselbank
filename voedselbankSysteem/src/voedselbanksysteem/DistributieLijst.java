@@ -5,9 +5,15 @@
  */
 package voedselbanksysteem;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
 
 /**
  *
@@ -114,7 +120,24 @@ public class DistributieLijst extends javax.swing.JFrame {
     
     //Refresh Button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        
+
+    
+    Object[][] data = { {1,"1"},   {2,"2"},  {3,"3"},  {4, "4"}, {5, "5"}};
+    String[] kolommen = {"OrderNr", "Naam uitgiftepunt", "Pakketten vorige week", "Verandering deze week", "Pakketten deze week"};
+    final JTable tabel = new JTable(data, kolommen);
+    
+    tabel.setAutoCreateRowSorter(true); 
+    
+    JButton revert = new JButton("Refresh");
+    revert.addActionListener( new ActionListener(){
+     
+        @Override public void actionPerformed(ActionEvent aEvent) {
+         List<RowSorter.SortKey> SORT = Collections.emptyList();
+         tabel.getRowSorter().setSortKeys(SORT);
+       }
+    });
+    
+    
         
         
     }//GEN-LAST:event_jButton1ActionPerformed
