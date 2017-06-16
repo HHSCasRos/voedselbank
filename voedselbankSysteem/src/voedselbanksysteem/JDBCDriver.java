@@ -25,7 +25,7 @@ public class JDBCDriver {
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
-            //aantal = sql.executeUpdate(query);
+            aantal = sql.executeUpdate(query);
         }
         catch(SQLException e){
             e.getStackTrace();
@@ -59,7 +59,6 @@ public class JDBCDriver {
             return aantal;
         }
     }
-    
     public static ArrayList<String> getUitgiftepunten(){
         ArrayList<String> uitgiftepunten = new ArrayList();
         try{
@@ -84,6 +83,7 @@ public class JDBCDriver {
             return uitgiftepunten;
         }
     }
+    
     public static ArrayList<ArrayList<String>> getDistributieLijst (int datum){
         ArrayList<ArrayList<String>> DistributieLijst = new ArrayList ();
         int datumVorigeWeek = datum - 7;
@@ -404,5 +404,4 @@ public class JDBCDriver {
             return aantal;
         }
     }
-    
 }
