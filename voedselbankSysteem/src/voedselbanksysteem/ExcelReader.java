@@ -69,6 +69,9 @@ public class ExcelReader {
             }
             if(succes == false){
                 System.out.println ("Er is iets mis met de informatie van de excelfile");
+            } else {
+                //move data from the temp table to the correct tables
+                System.out.println(JDBCDriver.setCliëntFromTemp());
             }
             file.close();
         }

@@ -1,5 +1,6 @@
 package voedselbanksysteem;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,7 +25,6 @@ public class JDBCDriver {
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
-            System.out.println(query);
             aantal = sql.executeUpdate(query);
         }
         catch(SQLException e){
@@ -59,6 +59,7 @@ public class JDBCDriver {
             return aantal;
         }
     }
+    
     public static ArrayList<String> getUitgiftepunten(){
         ArrayList<String> uitgiftepunten = new ArrayList();
         try{
@@ -106,7 +107,6 @@ public class JDBCDriver {
                 + " AND datumStopzetting > " + datum
                 + " GROUP BY naam";
             ResultSet executeQuery = sql.executeQuery(query);
-            
         }
         catch(SQLException e){
             e.getStackTrace();
@@ -117,7 +117,7 @@ public class JDBCDriver {
         }
     }
     
-    public static int getCliëntFromTemp(){
+    public static int setCliëntFromTemp(){
         int aantal = 0;
         ArrayList<String> cliënt = new ArrayList();
         
@@ -125,20 +125,50 @@ public class JDBCDriver {
             Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
             String query = "SELECT kaartnummer, naam, telefoonnummer, mobiel, email, naamPartner, adres, postcode, plaats FROM temp";
-            ResultSet executeQuery = sql.executeQuery(query);
-            cliënt.add(executeQuery.getString(1));
-            if(!executeQuery.isLast()){
-                executeQuery.next();
-                cliënt.add(executeQuery.getString(1));
-            }
+            ResultSet executedQuery = sql.executeQuery(query);
             
+            while(executedQuery.next()){
+                //change naam to voornaam, tussenvoegsel and achternaam
+                Cliënt.setNaam(executedQuery.getString("naam"));
+                String[] naam = new String[3];
+                naam[0] = Cliënt.getNaam()[0];
+                naam[1] = Cliënt.getNaam()[1];
+                naam[2] = Cliënt.getNaam()[2];
+                
+                Cliënt.setNaam(executedQuery.getString("naamPartner"));
+                String[] partner = new String[3];
+                partner[0] = Cliënt.getNaam()[0];
+                partner[1] = Cliënt.getNaam()[1];
+                partner[2] = Cliënt.getNaam()[2];
+                
+                cliënt.add(executedQuery.getString(1) + ", " + 
+                    "'" + naam[0] + "', " + 
+                    "'" + naam[1] + "', " + 
+                    "'" + naam[2] + "', " + 
+                    "'" + executedQuery.getString(3) + "', " + 
+                    "'" + executedQuery.getString(4) + "', " + 
+                    "'" + executedQuery.getString(5) + "', " + 
+                    "'" + partner[0] + "', " + 
+                    "'" + partner[1] + "', " + 
+                    "'" + partner[2] + "', " + 
+                    "'" + executedQuery.getString(7) + "', " + 
+                    "'" + executedQuery.getString(8) + "', " + 
+                    "'" + executedQuery.getString(9) + "')");
+                
+                String insert = "INSERT INTO Cliënt (kaartnr, voornaam, tussenvoegsel, achternaam, telefoonnr, mobielnr, email, partnetVoornaam, partnerTussenvoegsel, partnerAchternaam, adres, postcode, plaats) VALUES (";
+                insert += cliënt.get(cliënt.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
         }
         catch(SQLException e){
             e.getStackTrace();
+            System.out.println("arsghdsnj");
         }
         finally{
             closeConnection();
+            System.out.println(cliënt.get(0));
             return aantal;
         }
     }

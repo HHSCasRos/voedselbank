@@ -137,13 +137,14 @@ public class HomeScreen extends javax.swing.JFrame {
     //set maximum capaciteit uitgiftepunt
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-        MaxCapaciteitUitgiftepunt mcu = new MaxCapaciteitUitgiftepunt();
-        mcu.setVisible(true);
-        this.setVisible(false);
-        mcu.setOpener(this);
-        if(mcu == null){
-            mcu = new MaxCapaciteitUitgiftepunt();
-        }
+//        MaxCapaciteitUitgiftepunt mcu = new MaxCapaciteitUitgiftepunt();
+//        mcu.setVisible(true);
+//        this.setVisible(false);
+//        mcu.setOpener(this);
+//        if(mcu == null){
+//            mcu = new MaxCapaciteitUitgiftepunt();
+//        }
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
