@@ -25,7 +25,7 @@ public class JDBCDriver {
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
-            aantal = sql.executeUpdate(query);
+            //aantal = sql.executeUpdate(query);
         }
         catch(SQLException e){
             e.getStackTrace();
@@ -131,17 +131,17 @@ public class JDBCDriver {
             
             while(executedQuery.next()){
                 //change naam to voornaam, tussenvoegsel and achternaam
-                Cliënt.setNaam(executedQuery.getString("naam"));
+                Naam.setNaam(executedQuery.getString("naam"));
                 String[] naam = new String[3];
-                naam[0] = Cliënt.getNaam()[0];
-                naam[1] = Cliënt.getNaam()[1];
-                naam[2] = Cliënt.getNaam()[2];
+                naam[0] = Naam.getNaam()[0];
+                naam[1] = Naam.getNaam()[1];
+                naam[2] = Naam.getNaam()[2];
                 
-                Cliënt.setNaam(executedQuery.getString("naamPartner"));
+                Naam.setNaam(executedQuery.getString("naamPartner"));
                 String[] partner = new String[3];
-                partner[0] = Cliënt.getNaam()[0];
-                partner[1] = Cliënt.getNaam()[1];
-                partner[2] = Cliënt.getNaam()[2];
+                partner[0] = Naam.getNaam()[0];
+                partner[1] = Naam.getNaam()[1];
+                partner[2] = Naam.getNaam()[2];
                 
                 cliënt.add(executedQuery.getString(1) + ", " + 
                     "'" + naam[0] + "', " + 
@@ -169,6 +169,45 @@ public class JDBCDriver {
         finally{
             closeConnection();
             System.out.println(cliënt.get(0));
+            return aantal;
+        }
+    }
+    public static int setIntakerFromTemp(){
+        int aantal = 0;
+        ArrayList<String> intaker = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT intaker FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+                //change naam to voornaam, tussenvoegsel and achternaam
+                Naam.setNaam(executedQuery.getString("intaker"));
+                String[] naam = new String[3];
+                naam[0] = Naam.getNaam()[0];
+                naam[1] = Naam.getNaam()[1];
+                naam[2] = Naam.getNaam()[2];
+                
+                intaker.add("'" + naam[0] + "', " + 
+                    "'" + naam[1] + "', " + 
+                    "'" + naam[2] + "')");
+                
+                String insert = "INSERT INTO Intaker (voornaam, tussenvoegsel, achternaam) VALUES (";
+                insert += intaker.get(intaker.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("arsghdsnj");
+        }
+        finally{
+            closeConnection();
+            System.out.println(intaker.get(0));
             return aantal;
         }
     }

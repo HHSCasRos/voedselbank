@@ -9,7 +9,7 @@ package voedselbanksysteem;
  *
  * @author Cas_Ros
  */
-public class Cliënt {
+public class Naam {
     private static String voornaam;
     private static String tussenvoegsel;
     private static String achternaam;

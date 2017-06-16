@@ -72,6 +72,7 @@ public class ExcelReader {
             } else {
                 //move data from the temp table to the correct tables
                 System.out.println(JDBCDriver.setCliëntFromTemp());
+                System.out.println(JDBCDriver.setIntakerFromTemp());
             }
             file.close();
         }
