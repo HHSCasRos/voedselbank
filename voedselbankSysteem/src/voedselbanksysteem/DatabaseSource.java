@@ -31,9 +31,9 @@ public class DatabaseSource {
         }
 
         dbserver = "meru.hhs.nl";
-        database = "16014111";
-        username = "16014111";
-        password = "oceipho3ae";
+        database = "15078132";
+        username = "15078132";
+        password = "cu4yi9Ahqu";
 
     }
 

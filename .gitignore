@@ -12,3 +12,10 @@ voedselbankSysteem/lib/commons-codec-1.10.jar
 voedselbankSysteem/lib/commons-logging-1.2.jar
 voedselbankSysteem/nbproject/project.properties
 voedselbankSysteem/src/voedselbanksysteem/DatabaseSource.java
+voedselbankSysteem/src/voedselbanksysteem/DatabaseSource.java
+voedselbankSysteem/src/voedselbanksysteem/ImportScreen.form
+voedselbankSysteem/src/voedselbanksysteem/ImportScreen.java
+voedselbankSysteem/src/voedselbanksysteem/DatabaseSource.java
+*.jar
+voedselbankSysteem/dist/README.TXT
+voedselbankSysteem/src/voedselbanksysteem/DatabaseSource.java

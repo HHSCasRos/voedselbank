@@ -211,4 +211,198 @@ public class JDBCDriver {
             return aantal;
         }
     }
+    public static int setHulpverlenendeInsantieFromTemp(){
+        int aantal = 0;
+        ArrayList<String> hulpverlenendeInsantie = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT verwijzersDoor, verwijzersDoorContactpersoon, verwijzersDoorTelefoonnummer, verwijzersDoorEmail FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+                //change naam to voornaam, tussenvoegsel and achternaam
+                Naam.setNaam(executedQuery.getString("verwijzersDoor"));
+                String[] naam = new String[3];
+                naam[0] = Naam.getNaam()[0];
+                naam[1] = Naam.getNaam()[1];
+                naam[2] = Naam.getNaam()[2];
+                
+                hulpverlenendeInsantie.add(executedQuery.getString(1) + ", " + 
+                    "'" + naam[0] + "', " + 
+                    "'" + naam[1] + "', " + 
+                    "'" + naam[2] + "', " + 
+                    "'" + executedQuery.getString(3) + "', " +  
+                    "'" + executedQuery.getString(4) + "')");
+                
+                String insert = "INSERT INTO HulpverlendeInstantie (naam, contactpersoonVoornaam, contactpersoonTussenvoegsel, contactpersoonAchternaam, email, telefoonnr) VALUES (";
+                insert += hulpverlenendeInsantie.get(hulpverlenendeInsantie.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("arsghdsnj");
+        }
+        finally{
+            closeConnection();
+            System.out.println(hulpverlenendeInsantie.get(0));
+            return aantal;
+        }
+    }
+    public static int setIntakeFromTemp(){
+        int aantal = 0;
+        ArrayList<String> intake = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT Intakedatum, startdatumUitgifte, datumHerintake, datumStopzetting, redenStopzetting, status, aantalPersonen, aantalOnderNorm, gebruiktInMaanden, pakket FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+                //change naam to voornaam, tussenvoegsel and achternaam
+                
+                
+           
+                
+                intake.add(executedQuery.getString(1) + ", " + 
+                    "'" + executedQuery.getString(2) + "', " + 
+                    "'" + executedQuery.getString(3) + "', " + 
+                    "'" + executedQuery.getString(4) + "', " + 
+                    "'" + executedQuery.getString(5) + "', " + 
+                    "'" + executedQuery.getString(6) + "', " + 
+                    "'" + executedQuery.getString(7) + "', " + 
+                    "'" + executedQuery.getString(8) + "', " + 
+                    "'" + executedQuery.getString(9) + "', " +
+                    "'" + executedQuery.getString(10) + "')");
+                
+                String insert = "INSERT INTO Intake (intakedatum, startUitgifte, datumStopzetting, redenStopzetting, StatusIntake, aantalPersonen, aantalPersonenNorm, gebruikInMaanden, voedselpakketSoort) VALUES (";
+                insert += intake.get(intake.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("arsghdsnj");
+        }
+        finally{
+            closeConnection();
+            System.out.println(intake.get(0));
+            return aantal;
+        }
+    }
+    public static int setUitgifteFromTemp(){
+        int aantal = 0;
+        ArrayList<String> uitgifte = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT Uitgifte, verwijzersNaarContactpersoon, verwijzersNaarTelefoonnummer, verwijzerNaarEmail FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+                //change naam to voornaam, tussenvoegsel and achternaam
+                
+                
+           
+                
+                uitgifte.add(executedQuery.getString(1) + ", " + 
+                    "'" + executedQuery.getString(2) + "', " + 
+                    "'" + executedQuery.getString(3) + "', " + 
+                    "'" + executedQuery.getString(4) + "')");
+                
+                String insert = "INSERT INTO Intake (Naam, contactpersoon, telefoonnr, email ) VALUES (";
+                insert += uitgifte.get(uitgifte.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("arsghdsnj");
+        }
+        finally{
+            closeConnection();
+            System.out.println(uitgifte.get(0));
+            return aantal;
+        }
+    }
+    public static int setVoedselpakketFromTemp(){
+        int aantal = 0;
+        ArrayList<String> voedselpakket = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT pakket FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+                //change naam to voornaam, tussenvoegsel and achternaam
+               
+                
+                voedselpakket.add(
+                    "'" + executedQuery.getString(1) + "')");
+                
+                String insert = "INSERT INTO Voedselpakket (soort) VALUES (";
+                insert += voedselpakket.get(voedselpakket.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("arsghdsnj");
+        }
+        finally{
+            closeConnection();
+            System.out.println(voedselpakket.get(0));
+            return aantal;
+        }
+    }
+    public static int setIdentiteitFromTemp(){
+        int aantal = 0;
+        ArrayList<String> identiteit = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT identiteitsnummer, plaatsUitgifteIdentiteitsbewijs, datumUitgifteIndentiteitsbewijs, identiteitsbewijsSoort FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+        
+                
+                identiteit.add(executedQuery.getString(1) + ", " + 
+                    "'" + executedQuery.getString(2) + "', " + 
+                    "'" + executedQuery.getString(3) + "', " + 
+                    "'" + executedQuery.getString(4) + "')");
+                
+                String insert = "INSERT INTO Identiteit (BSN, plaatsUitgifte, uitgiftedatum, idSoort) VALUES (";
+                insert += identiteit.get(identiteit.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("arsghdsnj");
+        }
+        finally{
+            closeConnection();
+            System.out.println(identiteit.get(0));
+            return aantal;
+        }
+    }
+    
 }
