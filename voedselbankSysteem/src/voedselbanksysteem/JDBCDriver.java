@@ -225,7 +225,7 @@ public class JDBCDriver {
             
             while(executedQuery.next()){
                 //change naam to voornaam, tussenvoegsel and achternaam
-                Naam.setNaam(executedQuery.getString("verwijzersDoor"));
+                Naam.setNaam(executedQuery.getString("verwijzersDoorContactpersoon"));
                 String[] naam = new String[3];
                 naam[0] = Naam.getNaam()[0];
                 naam[1] = Naam.getNaam()[1];
@@ -320,7 +320,7 @@ public class JDBCDriver {
                     "'" + executedQuery.getString(3) + "', " + 
                     "'" + executedQuery.getString(4) + "')");
                 
-                String insert = "INSERT INTO Intake (Naam, contactpersoon, telefoonnr, email ) VALUES (";
+                String insert = "INSERT INTO Uitgiftepunt (Naam, contactpersoon, telefoonnr, email ) VALUES (";
                 insert += uitgifte.get(uitgifte.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
