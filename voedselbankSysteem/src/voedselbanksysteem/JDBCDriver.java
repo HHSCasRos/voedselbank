@@ -320,7 +320,7 @@ public class JDBCDriver {
                     "'" + executedQuery.getString(3) + "', " + 
                     "'" + executedQuery.getString(4) + "')");
                 
-                String insert = "INSERT INTO Uitgiftepunt (Naam, contactpersoon, telefoonnr, email ) VALUES (";
+                String insert = "INSERT INTO Uitgiftepunt (Naam, contactpersoon, telefoonnr, email) VALUES (";
                 insert += uitgifte.get(uitgifte.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }

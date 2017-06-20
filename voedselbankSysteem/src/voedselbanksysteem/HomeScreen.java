@@ -12,13 +12,14 @@ import javax.swing.JFrame;
  * @author Cas_Ros
  */
 public class HomeScreen extends javax.swing.JFrame {
-
+    
     /**
      * Creates new form HomeSchreen
      */
     public HomeScreen() {
         initComponents();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -137,13 +138,13 @@ public class HomeScreen extends javax.swing.JFrame {
     //set maximum capaciteit uitgiftepunt
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-//        MaxCapaciteitUitgiftepunt mcu = new MaxCapaciteitUitgiftepunt();
-//        mcu.setVisible(true);
-//        this.setVisible(false);
-//        mcu.setOpener(this);
-//        if(mcu == null){
-//            mcu = new MaxCapaciteitUitgiftepunt();
-//        }
+        MaximumCapaciteit mcu = new MaximumCapaciteit();
+        mcu.setVisible(true);
+        this.setVisible(false);
+        mcu.setOpener(this);
+        if(mcu == null){
+            mcu = new MaximumCapaciteit();
+        }
 
     }//GEN-LAST:event_jButton5ActionPerformed
 

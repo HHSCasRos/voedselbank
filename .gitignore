@@ -19,3 +19,4 @@ voedselbankSysteem/src/voedselbanksysteem/DatabaseSource.java
 *.jar
 voedselbankSysteem/dist/README.TXT
 voedselbankSysteem/src/voedselbanksysteem/DatabaseSource.java
+*.properties
