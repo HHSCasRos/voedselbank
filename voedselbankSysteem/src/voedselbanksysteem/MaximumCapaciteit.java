@@ -5,6 +5,9 @@
  */
 package voedselbanksysteem;
 
+import java.util.ArrayList;
+import javax.swing.*;
+
 /**
  *
  * @author Calvin Zeij
@@ -67,7 +70,12 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
 
         jLabel2.setText("Capaciteit");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(ComboBoxContent()));
+        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBox2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -108,7 +116,7 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    
+    //terug button
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         HomeScreen hs = new HomeScreen();
         hs.setVisible(true);
@@ -125,12 +133,17 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jTextPane1KeyTyped
 
+    //verander capaciteit button
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int capaciteit = Integer.parseInt(jTextPane1.getText());
         String naamUitgifte = jComboBox2.getSelectedItem().toString();
         System.out.println(capaciteit + naamUitgifte);
         JDBCDriver.updateUitgiftepunt(naamUitgifte ,capaciteit);
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBox2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -165,6 +178,18 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
                 new MaximumCapaciteit().setVisible(true);
             }
         });
+    }
+    
+    //convert arraylist to array
+    private String[] ComboBoxContent(){
+        ArrayList<String> arrayList = JDBCDriver.getUitgiftepunten();
+        
+        String[] array = new String[arrayList.size()];
+        for(int i = 0; i < array.length; i++) {
+            array[i] = arrayList.get(i);
+        }
+        
+        return array;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
