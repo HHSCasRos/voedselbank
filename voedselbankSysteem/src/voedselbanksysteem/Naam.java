@@ -55,12 +55,13 @@ public class Naam {
         endLastname = i;
         
         //get insertion from name
-        tussenvoegsel = "";
+        tussenvoegsel = " ";
         
         i = endFirstname + 1;
         while(i < endLastname){
             tussenvoegsel += naam.charAt(i);
             i++;
         }
+        tussenvoegsel += " ";
     }
 }

@@ -21,7 +21,7 @@ public class JDBCDriver {
             connection = getConnection();
             
             Statement sql = connection.createStatement();
-            String query = "INSERT INTO temp (kaartnummer, naam, naamPartner, telefoonnummer, email, mobiel, aantalPersonen, aantalOnderNorm, gebruiktInMaanden, identiteitsbewijsSoort, datumUitgifteIndentiteitsbewijs, identiteitsnummer, plaatsUitgifteIdentiteitsbewijs, adres, postcode, plaats, status, intaker, intakedatum, startdatumUitgifte, datumHerintake, datumStopzetting, redenStopzetting, verwijzersDoor, verwijzersDoorContactpersoon, verwijzersDoorTelefoonnummer, verwijzersDoorEmail, verwijzersNaar, verwijzersNaarContactpersoon, verwijzersNaarTelefoonnummer, verwijzersNaarEmail, Uitgiftepunt, pakket) VALUES (";
+            String query = "INSERT IGNORE INTO temp (kaartnummer, naam, naamPartner, telefoonnummer, email, mobiel, aantalPersonen, aantalOnderNorm, gebruiktInMaanden, identiteitsbewijsSoort, datumUitgifteIndentiteitsbewijs, identiteitsnummer, plaatsUitgifteIdentiteitsbewijs, adres, postcode, plaats, status, intaker, intakedatum, startdatumUitgifte, datumHerintake, datumStopzetting, redenStopzetting, verwijzersDoor, verwijzersDoorContactpersoon, verwijzersDoorTelefoonnummer, verwijzersDoorEmail, verwijzersNaar, verwijzersNaarContactpersoon, verwijzersNaarTelefoonnummer, verwijzersNaarEmail, Uitgiftepunt, pakket) VALUES (";
             for(int i = 0; i < velden.size(); i++){
                 query += velden.get(i);
             }
@@ -157,14 +157,14 @@ public class JDBCDriver {
                     "'" + executedQuery.getString(8) + "', " + 
                     "'" + executedQuery.getString(9) + "')");
                 
-                String insert = "INSERT INTO Cliënt (kaartnr, voornaam, tussenvoegsel, achternaam, telefoonnr, mobielnr, email, partnetVoornaam, partnerTussenvoegsel, partnerAchternaam, adres, postcode, plaats) VALUES (";
+                String insert = "INSERT IGNORE INTO Cliënt (kaartnr, voornaam, tussenvoegsel, achternaam, telefoonnr, mobielnr, email, partnetVoornaam, partnerTussenvoegsel, partnerAchternaam, adres, postcode, plaats) VALUES (";
                 insert += cliënt.get(cliënt.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("Cliënt");
         }
         finally{
             closeConnection();
@@ -196,14 +196,14 @@ public class JDBCDriver {
                     "'" + naam[1] + "', " + 
                     "'" + naam[2] + "')");
                 
-                String insert = "INSERT INTO Intaker (voornaam, tussenvoegsel, achternaam) VALUES (";
+                String insert = "INSERT IGNORE INTO Intaker (voornaam, tussenvoegsel, achternaam) VALUES (";
                 insert += intaker.get(intaker.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("Intaker");
         }
         finally{
             closeConnection();
@@ -220,7 +220,7 @@ public class JDBCDriver {
             connection = getConnection();
             Statement sql = connection.createStatement();
             Statement insertsql = connection.createStatement();//statement 
-            String query = "SELECT verwijzersDoor, verwijzersDoorContactpersoon, verwijzersDoorTelefoonnummer, verwijzersDoorEmail FROM temp";
+            String query = "SELECT verwijzersDoor, verwijzersDoorContactpersoon, verwijzersDoorEmail, verwijzersDoorTelefoonnummer FROM temp";
             ResultSet executedQuery = sql.executeQuery(query);
             
             while(executedQuery.next()){
@@ -231,21 +231,21 @@ public class JDBCDriver {
                 naam[1] = Naam.getNaam()[1];
                 naam[2] = Naam.getNaam()[2];
                 
-                hulpverlenendeInsantie.add(executedQuery.getString(1) + ", " + 
+                hulpverlenendeInsantie.add("'" + executedQuery.getString(1) + "', " + 
                     "'" + naam[0] + "', " + 
                     "'" + naam[1] + "', " + 
                     "'" + naam[2] + "', " + 
                     "'" + executedQuery.getString(3) + "', " +  
                     "'" + executedQuery.getString(4) + "')");
                 
-                String insert = "INSERT INTO HulpverlendeInstantie (naam, contactpersoonVoornaam, contactpersoonTussenvoegsel, contactpersoonAchternaam, email, telefoonnr) VALUES (";
+                String insert = "INSERT IGNORE INTO HulpverlenendeInsantie (naam, contactpersoonVoornaam, contactpersoonTussenvoegsel, contactpersoonAchternaam, email, telefoonnr) VALUES (";
                 insert += hulpverlenendeInsantie.get(hulpverlenendeInsantie.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("HulpverlenendeInsantie");
         }
         finally{
             closeConnection();
@@ -261,35 +261,42 @@ public class JDBCDriver {
             Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement();
+            Statement intakersql = connection.createStatement();
             Statement insertsql = connection.createStatement();//statement 
-            String query = "SELECT Intakedatum, startdatumUitgifte, datumHerintake, datumStopzetting, redenStopzetting, status, aantalPersonen, aantalOnderNorm, gebruiktInMaanden, pakket FROM temp";
+            String query = "SELECT intaker, verwijzersDoor, kaartnummer, Intakedatum, startdatumUitgifte, datumStopzetting, redenStopzetting, status, aantalPersonen, aantalOnderNorm, gebruiktInMaanden, pakket FROM temp";
             ResultSet executedQuery = sql.executeQuery(query);
             
             while(executedQuery.next()){
-                //change naam to voornaam, tussenvoegsel and achternaam
+                //change temp.intaker to Intaker.idIntaker
+                Naam.setNaam(executedQuery.getString(1));
+                String[] naam = new String[3];
+                naam[0] = Naam.getNaam()[0];
+                naam[1] = Naam.getNaam()[1];
+                naam[2] = Naam.getNaam()[2];
+                ResultSet intaker = intakersql.executeQuery("SELECT idIntaker FROM Intaker WHERE voornaam = '" + naam[0] + "' AND tussenvoegsel = '" + naam[1] + "' AND achternaam = '" + naam[2] + "'");
+                intaker.next();
                 
-                
-           
-                
-                intake.add(executedQuery.getString(1) + ", " + 
+                intake.add(intaker.getString(1) + ", " +
                     "'" + executedQuery.getString(2) + "', " + 
-                    "'" + executedQuery.getString(3) + "', " + 
+                    executedQuery.getString(3) + ", " + 
                     "'" + executedQuery.getString(4) + "', " + 
                     "'" + executedQuery.getString(5) + "', " + 
                     "'" + executedQuery.getString(6) + "', " + 
                     "'" + executedQuery.getString(7) + "', " + 
                     "'" + executedQuery.getString(8) + "', " + 
-                    "'" + executedQuery.getString(9) + "', " +
-                    "'" + executedQuery.getString(10) + "')");
+                    "'" + executedQuery.getString(9) + "', " + 
+                    executedQuery.getString(10) + ", " +
+                    executedQuery.getString(11) + ", " +
+                    "'" + executedQuery.getString(12) + "')");
                 
-                String insert = "INSERT INTO Intake (intakedatum, startUitgifte, datumStopzetting, redenStopzetting, StatusIntake, aantalPersonen, aantalPersonenNorm, gebruikInMaanden, voedselpakketSoort) VALUES (";
+                String insert = "INSERT IGNORE INTO Intake (intaker, hulpverlenendeInstantie, cliënt, intakedatum, startUitgifte, datumStopzetting, redenStopzetting, StatusIntake, aantalPersonen, aantalPersonenNorm, gebruikInMaanden, voedselpakketSoort) VALUES (";
                 insert += intake.get(intake.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("Intake");
         }
         finally{
             closeConnection();
@@ -306,28 +313,24 @@ public class JDBCDriver {
             connection = getConnection();
             Statement sql = connection.createStatement();
             Statement insertsql = connection.createStatement();//statement 
-            String query = "SELECT Uitgifte, verwijzersNaarContactpersoon, verwijzersNaarTelefoonnummer, verwijzerNaarEmail FROM temp";
+            String query = "SELECT Uitgiftepunt, verwijzersNaarContactpersoon, verwijzersNaarTelefoonnummer, verwijzersNaarEmail FROM temp";
             ResultSet executedQuery = sql.executeQuery(query);
             
             while(executedQuery.next()){
-                //change naam to voornaam, tussenvoegsel and achternaam
                 
-                
-           
-                
-                uitgifte.add(executedQuery.getString(1) + ", " + 
+                uitgifte.add("'" + executedQuery.getString(1) + "', " + 
                     "'" + executedQuery.getString(2) + "', " + 
                     "'" + executedQuery.getString(3) + "', " + 
                     "'" + executedQuery.getString(4) + "')");
                 
-                String insert = "INSERT INTO Uitgiftepunt (Naam, contactpersoon, telefoonnr, email) VALUES (";
+                String insert = "INSERT IGNORE INTO Uitgiftepunt (Naam, contactpersoon, telefoonnr, email) VALUES (";
                 insert += uitgifte.get(uitgifte.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("Uitgifte");
         }
         finally{
             closeConnection();
@@ -354,14 +357,14 @@ public class JDBCDriver {
                 voedselpakket.add(
                     "'" + executedQuery.getString(1) + "')");
                 
-                String insert = "INSERT INTO Voedselpakket (soort) VALUES (";
+                String insert = "INSERT IGNORE INTO Voedselpakket (soort) VALUES (";
                 insert += voedselpakket.get(voedselpakket.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("Voedselpakket");
         }
         finally{
             closeConnection();
@@ -389,14 +392,14 @@ public class JDBCDriver {
                     "'" + executedQuery.getString(3) + "', " + 
                     "'" + executedQuery.getString(4) + "')");
                 
-                String insert = "INSERT INTO Identiteit (BSN, plaatsUitgifte, uitgiftedatum, idSoort) VALUES (";
+                String insert = "INSERT IGNORE INTO Identiteit (BSN, plaatsUitgifte, uitgiftedatum, idSoort) VALUES (";
                 insert += identiteit.get(identiteit.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
         }
         catch(SQLException e){
             e.getStackTrace();
-            System.out.println("arsghdsnj");
+            System.out.println("Identiteit");
         }
         finally{
             closeConnection();

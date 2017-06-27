@@ -53,7 +53,7 @@ public class ExcelReader {
                             velden.add("'" + cell.getStringCellValue() + "', ");
                             break;
                         case Cell.CELL_TYPE_FORMULA:
-                            //Not again
+                            velden.add("NULL, ");
                             break;
                         case Cell.CELL_TYPE_BLANK:
                             velden.add("NULL, ");
