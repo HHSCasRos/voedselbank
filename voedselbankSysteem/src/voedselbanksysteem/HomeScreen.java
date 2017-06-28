@@ -124,6 +124,7 @@ public class HomeScreen extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         ImportScreen is = new ImportScreen();
         is.setVisible(true);
+        is.setLocationRelativeTo(null);
         this.setVisible(false);
         is.setOpener(this);
         if(is == null){
@@ -140,6 +141,7 @@ public class HomeScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
         MaximumCapaciteit mcu = new MaximumCapaciteit();
         mcu.setVisible(true);
+        mcu.setLocationRelativeTo(null);
         this.setVisible(false);
         mcu.setOpener(this);
         if(mcu == null){
@@ -152,6 +154,7 @@ public class HomeScreen extends javax.swing.JFrame {
         // TODO add your handling code here:
            DistributieLijst dbl = new DistributieLijst();
            dbl.setVisible(true);
+           dbl.setLocationRelativeTo(null);
            this.setVisible(false);
            dbl.setOpener(this);
     }//GEN-LAST:event_jButton13ActionPerformed
