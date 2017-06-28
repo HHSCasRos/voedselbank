@@ -3,9 +3,12 @@ package voedselbanksysteem;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
 import static voedselbanksysteem.DatabaseSource.*;
 
 /**

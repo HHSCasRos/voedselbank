@@ -177,6 +177,7 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
             public void run() {
                 new MaximumCapaciteit().setVisible(true);
             }
+            
         });
     }
     

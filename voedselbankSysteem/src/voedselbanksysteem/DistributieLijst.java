@@ -7,13 +7,20 @@ package voedselbanksysteem;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
+import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -22,13 +29,56 @@ import javax.swing.RowSorter;
 public class DistributieLijst extends javax.swing.JFrame {
     
     private HomeScreen opener;
+    private Connection connection;
+    private Statement statement;
+    private ResultSet rs;
 
     /**
      * Creates new form DistributieLijst
      */
     public DistributieLijst() {
-        initComponents();
+        try {
+            initComponents();
+            connection = DatabaseSource.getConnection();
+            statement = connection.createStatement();
+
+            
+            String query = "Select * From Cliënt";
+            rs = statement.executeQuery (query);
+            // alle nummers van de collom
+            ResultSetMetaData rsmetadata = rs.getMetaData();
+            
+            int columns = rsmetadata.getColumnCount();
+            
+            DefaultTableModel dtm = new DefaultTableModel();
+            Vector columns_name = new Vector();
+            Vector data_rows = new Vector();
+            
+            for(int i= 1; i<columns; i++){
+            columns_name.addElement(rsmetadata.getColumnClassName(i));
+            }
+             dtm.setColumnIdentifiers(columns_name);
+             
+             while(rs.next()){
+                 
+                 data_rows = new Vector();
+                 for(int j = 1; j< columns; j++){
+                     data_rows.addElement(rs.getString(j));
+                 }
+                 dtm.addRow(data_rows);
+                     
+             }
+             jTable1.setModel(dtm);
+            
+            
+            
+            
+        }catch (SQLException ex) {
+            System.out.println ("Er is iets mis met de database.");
+            // Logger.getLogger(Blok4WC2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
+    
       void setOpener(HomeScreen a) {
         this.opener = a;
       }
@@ -42,40 +92,28 @@ public class DistributieLijst extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        tabeldbl = new javax.swing.JTable();
+        jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1280, 720));
 
-        tabeldbl.setModel(new javax.swing.table.DefaultTableModel(
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(1000, 500));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "OrderNr", "Naam uitgiftepunt", "Pakketten vorige week", "Verandering deze week ", "Pakketten deze week"
+                "Title 1", "Title 2", "Title 3", "Title 4"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, false, true, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tabeldbl);
+        ));
+        jScrollPane1.setViewportView(jTable1);
 
         jButton1.setText("Refresh");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -102,25 +140,24 @@ public class DistributieLijst extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 406, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(96, 96, 96)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -135,20 +172,20 @@ public class DistributieLijst extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
     
-    Object[][] data = { {1,"1"},   {2,"2"},  {3,"3"},  {4, "4"}, {5, "5"}};
-    String[] kolommen = {"OrderNr", "Naam uitgiftepunt", "Pakketten vorige week", "Verandering deze week", "Pakketten deze week"};
-    final JTable tabel = new JTable(data, kolommen);
-    
-    tabel.setAutoCreateRowSorter(true); 
-    
-    JButton revert = new JButton("Refresh");
-    revert.addActionListener( new ActionListener(){
-     
-        @Override public void actionPerformed(ActionEvent aEvent) {
-         List<RowSorter.SortKey> SORT = Collections.emptyList();
-         tabel.getRowSorter().setSortKeys(SORT);
-       }
-    });
+//    Object[][] data = { {1,"1"},   {2,"2"},  {3,"3"},  {4, "4"}, {5, "5"}};
+//    String[] kolommen = {"OrderNr", "Naam uitgiftepunt", "Pakketten vorige week", "Verandering deze week", "Pakketten deze week"};
+//    final JTable tabel = new JTable(data, kolommen);
+//    
+//    tabel.setAutoCreateRowSorter(true); 
+//    
+//    JButton revert = new JButton("Refresh");
+//    revert.addActionListener( new ActionListener(){
+//     
+//        @Override public void actionPerformed(ActionEvent aEvent) {
+//         List<RowSorter.SortKey> SORT = Collections.emptyList();
+//         tabel.getRowSorter().setSortKeys(SORT);
+//       }
+//    });
     
     
         
@@ -162,7 +199,7 @@ public class DistributieLijst extends javax.swing.JFrame {
             MessageFormat header = new MessageFormat("Pagina header");
             MessageFormat footer = new MessageFormat("Pagina 1, number, integer");
             
-            tabeldbl.print(JTable.PrintMode.FIT_WIDTH, header, footer);
+            jTable1.print(JTable.PrintMode.FIT_WIDTH, header, footer);
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e);
                 
@@ -221,6 +258,6 @@ public class DistributieLijst extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tabeldbl;
+    private javax.swing.JTable jTable1;
     // End of variables declaration//GEN-END:variables
 }
