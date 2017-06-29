@@ -1,14 +1,13 @@
 package voedselbanksysteem;
 
-import java.sql.Array;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.ComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -53,12 +52,15 @@ public class JDBCDriver {
         try{
             Connection connection;
             connection = getConnection();
-            Statement sql = connection.createStatement();
-            String query = "UPDATE Uitgiftepunt SET maximumCapaciteit = " + nieuweWaarde + " WHERE Naam = '" + naam + "'";
             
-            System.out.println(query);
+            String query = "UPDATE Uitgiftepunt SET maximumCapaciteit = ? WHERE Naam = ?";
             
-            aantal = sql.executeUpdate(query);
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, nieuweWaarde);
+            preparedStatement.setString(2, naam);
+            
+            //execute update SQL statement
+            preparedStatement.executeUpdate();
         }
         catch(SQLException e){
             e.getStackTrace();
@@ -75,8 +77,8 @@ public class JDBCDriver {
             connection = getConnection();
             Statement sql = connection.createStatement();
             String query = "SELECT Naam FROM Uitgiftepunt";
-            ResultSet rs = sql.executeQuery(query);
             
+            ResultSet rs = sql.executeQuery(query);
             while(rs.next()){
                 jc.addItem(rs.getString(1));
             }
@@ -86,6 +88,29 @@ public class JDBCDriver {
         }
         finally{
             closeConnection();
+        }
+    }
+    public static int updateCiënt(String uitgiftepunt, int kaartnr){
+        int aantal = 0;
+        try{
+            Connection connection;
+            connection = getConnection();
+            
+            String query = "UPDATE Cliënt SET toegewezenUitgiftepunt = ? WHERE kaartnr = ?";
+            
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, uitgiftepunt);
+            preparedStatement.setInt(2, kaartnr);
+            
+            //execute update SQL statement
+            aantal = preparedStatement.executeUpdate();
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+        }
+        finally{
+            closeConnection();
+            return aantal;
         }
     }
     
@@ -344,38 +369,38 @@ public class JDBCDriver {
             return aantal;
         }
     }
-//    public static int setVoedselpakketFromTemp(){
-//        int aantal = 0;
-//        ArrayList<String> voedselpakket = new ArrayList();
-//        
-//        try{
-//            Connection connection;
-//            connection = getConnection();
-//            Statement sql = connection.createStatement();
-//            Statement insertsql = connection.createStatement();//statement 
-//            String query = "SELECT pakket, Uitgiftepunt FROM temp";
-//            ResultSet executedQuery = sql.executeQuery(query);
-//            
-//            while(executedQuery.next()){
-//                
-//                voedselpakket.add("'" + executedQuery.getString(1) + "', " + 
-//                    "'" + executedQuery.getString(2) + "')");
-//                
-//                String insert = "INSERT IGNORE INTO Voedselpakket (soort, uitgiftepunt) VALUES (";
-//                insert += voedselpakket.get(voedselpakket.size() - 1);
-//                aantal += insertsql.executeUpdate(insert);
-//            }
-//        }
-//        catch(SQLException e){
-//            e.getStackTrace();
-//            System.out.println("Voedselpakket");
-//        }
-//        finally{
-//            closeConnection();
-//            System.out.println(voedselpakket.get(0));
-//            return aantal;
-//        }
-//    }
+    /* public static int setVoedselpakketFromTemp(){
+        int aantal = 0;
+        ArrayList<String> voedselpakket = new ArrayList();
+        
+        try{
+            Connection connection;
+            connection = getConnection();
+            Statement sql = connection.createStatement();
+            Statement insertsql = connection.createStatement();//statement 
+            String query = "SELECT pakket, Uitgiftepunt FROM temp";
+            ResultSet executedQuery = sql.executeQuery(query);
+            
+            while(executedQuery.next()){
+                
+                voedselpakket.add("'" + executedQuery.getString(1) + "', " + 
+                    "'" + executedQuery.getString(2) + "')");
+                
+                String insert = "INSERT IGNORE INTO Voedselpakket (soort, uitgiftepunt) VALUES (";
+                insert += voedselpakket.get(voedselpakket.size() - 1);
+                aantal += insertsql.executeUpdate(insert);
+            }
+        }
+        catch(SQLException e){
+            e.getStackTrace();
+            System.out.println("Voedselpakket");
+        }
+        finally{
+            closeConnection();
+            System.out.println(voedselpakket.get(0));
+            return aantal;
+        }
+    } */
     public static int setIdentiteitFromTemp(){
         int aantal = 0;
         ArrayList<String> identiteit = new ArrayList();
