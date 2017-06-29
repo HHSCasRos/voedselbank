@@ -160,6 +160,7 @@ public class ClientToewijzen extends javax.swing.JFrame {
         int row = jTable1.getSelectedRow();
         String value = jTable1.getModel().getValueAt(row, column).toString();
         int capaciteit = Integer.parseInt(value);
+        JDBCDriver.updateCiënt(naamUitgifte, capaciteit);
         
         System.out.println(capaciteit + naamUitgifte);
         
