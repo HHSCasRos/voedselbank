@@ -13,12 +13,15 @@ import java.util.ArrayList;
  */
 public class MaximumCapaciteit extends javax.swing.JFrame {
     private HomeScreen opener;
+    private JDBCDriver driver;
 
     /**
      * Creates new form MaximumCapaciteit
      */
     public MaximumCapaciteit() {
         initComponents();
+        driver = new JDBCDriver();
+        driver.getUitgiftepunten(jComboBox2);
     }
     
     public void setOpener(HomeScreen a){
@@ -69,7 +72,6 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
 
         jLabel2.setText("Capaciteit");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(ComboBoxContent()));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
@@ -92,7 +94,7 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1)))
-                .addContainerGap(84, Short.MAX_VALUE))
+                .addContainerGap(215, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -137,7 +139,7 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int capaciteit = Integer.parseInt(jTextPane1.getText());
         String naamUitgifte = jComboBox2.getSelectedItem().toString();
-        System.out.println(capaciteit + naamUitgifte);
+        System.out.println(naamUitgifte + " " + capaciteit);
         JDBCDriver.updateUitgiftepunt(naamUitgifte ,capaciteit);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -182,16 +184,16 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
     }
     
     //convert arraylist to array
-    private String[] ComboBoxContent(){
-        ArrayList<String> arrayList = JDBCDriver.getUitgiftepunten();
-        
-        String[] array = new String[arrayList.size()];
-        for(int i = 0; i < array.length; i++) {
-            array[i] = arrayList.get(i);
-        }
-        
-        return array;
-    }
+//    private String[] ComboBoxContent(){
+//        ArrayList<String> arrayList = JDBCDriver.getUitgiftepunten();
+//        
+//        String[] array = new String[arrayList.size()];
+//        for(int i = 0; i < array.length; i++) {
+//            array[i] = arrayList.get(i);
+//        }
+//        
+//        return array;
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

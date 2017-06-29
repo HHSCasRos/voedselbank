@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.ComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static voedselbanksysteem.DatabaseSource.*;
@@ -52,7 +54,7 @@ public class JDBCDriver {
             Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement();
-            String query = "UPDATE Uitgiftepunt SET maximumCapaciteit = " + nieuweWaarde + " WHERE naam = " + naam;
+            String query = "UPDATE Uitgiftepunt SET maximumCapaciteit = " + nieuweWaarde + " WHERE Naam = " + naam;
             aantal = sql.executeUpdate(query);
         }
         catch(SQLException e){
@@ -63,28 +65,31 @@ public class JDBCDriver {
             return aantal;
         }
     }
-    public static ArrayList<String> getUitgiftepunten(){
-        ArrayList<String> uitgiftepunten = new ArrayList();
+    public static void getUitgiftepunten(JComboBox jc){
+        
         try{
             Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement();
-            String query = "SELECT naam FROM uitgiftepunt";
-            ResultSet executeQuery = sql.executeQuery(query);
+            String query = "SELECT Naam FROM Uitgiftepunt";
+            ResultSet rs = sql.executeQuery(query);
             
-            uitgiftepunten.add(executeQuery.getString(1));
-            if(!executeQuery.isLast()){
-                executeQuery.next();
-                uitgiftepunten.add(executeQuery.getString(1));
+            while(rs.next()){
+                jc.addItem(rs.getString(1));
             }
-            return uitgiftepunten;
+            
+            
+            
+            
+            
+           
         }
         catch(SQLException e){
             e.getStackTrace();
         }
         finally{
             closeConnection();
-            return uitgiftepunten;
+            
         }
     }
     
