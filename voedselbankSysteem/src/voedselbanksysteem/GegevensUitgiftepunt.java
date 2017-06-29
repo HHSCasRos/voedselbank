@@ -38,12 +38,15 @@ public class GegevensUitgiftepunt extends javax.swing.JFrame {
             statement = connection.createStatement();
 
             
-            String query = "SELECT Uitgiftepunt, maximumCapaciteit, count(DISTINCT kaartnr) as 'Huidige clienten', Sum(CASE WHEN soort = 'Enkelvoudig pakket' THEN 1 WHEN soort = 'Dubbel pakket' THEN 2 WHEN soort = '3-voudig pakket' THEN 3 END) as 'Uit te leveren pakketen'\n" +
-                            "from Uitgiftepunt join Cliënt c on naam = toegewezenUitgiftepunt\n" +
-                             "join Voedselpakket on uitgiftepunt = naam\n" +
-                             "join Intake i on kaartnr = Cliënt       \n" +
-                              "where i.StatusIntake = 'actief'\n" +
-                                "group by Uitgiftepunt;";
+            String query = "SELECT Naam, maximumCapaciteit, count(DISTINCT kaartnr) as 'Huidige clienten',\n" +
+"sum(CASE voedselpakketSoort\n" +
+"WHEN 'Enkelvoudig pakket' THEN 1\n" +
+"WHEN 'Dubbel pakket' THEN 2\n" +
+"WHEN '3-voudig pakket' THEN 3 END) as 'Aantal pakketten'\n" +
+"                            from Uitgiftepunt join Cliënt c on Naam = toegewezenUitgiftepunt\n" +
+"											  join Intake i on kaartnr = Cliënt   \n" +
+"                                              where i.StatusIntake = 'actief'\n" +
+"											  group by Naam;";
             rs = statement.executeQuery (query);
             // alle nummers van de collom
             
