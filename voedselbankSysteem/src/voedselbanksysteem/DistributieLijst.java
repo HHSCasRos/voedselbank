@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowSorter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -33,22 +34,34 @@ public class DistributieLijst extends javax.swing.JFrame {
     private Statement statement;
     private ResultSet rs;
     private JDBCDriver driver;
+    
 
     /**
      * Creates new form DistributieLijst
      */
     public DistributieLijst() {
+        
         try {
             initComponents();
             connection = DatabaseSource.getConnection();
             statement = connection.createStatement();
 
             
-            String query = "Select * From Cliënt";
+            String query = "SELECT naam,  \n" +
+"Sum(CASE voedselpakketSoort WHEN 'Enkelvoudig pakket' THEN 1\n" +
+"WHEN 'Dubbel pakket' THEN 2\n" +
+"WHEN '3-voudig pakket' THEN 3 END) as 'Uit te leveren pakketen'\n" +
+"from Uitgiftepunt join Cliënt c on naam = toegewezenUitgiftepunt\n" +
+"				  join Intake i on kaartnr = Cliënt                  \n" +
+"where i.StatusIntake = 'actief'\n" +
+"AND i.startUitgifte < 42884\n" +
+"AND i.datumStopzetting > 42884 \n" +
+"group by naam;";
+            
             rs = statement.executeQuery (query);
             // alle nummers van de collom
             
-            driver = new JDBCDriver();
+            
             JDBCDriver.fillTable(rs, jTable1);
             
             
@@ -73,12 +86,16 @@ public class DistributieLijst extends javax.swing.JFrame {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        TransferRows = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        DeleteRow = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1280, 720));
+        setPreferredSize(new java.awt.Dimension(900, 500));
+        setResizable(false);
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(1000, 500));
 
@@ -95,10 +112,10 @@ public class DistributieLijst extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        jButton1.setText("Refresh");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        TransferRows.setText("Toevoegen");
+        TransferRows.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                TransferRowsActionPerformed(evt);
             }
         });
 
@@ -116,61 +133,88 @@ public class DistributieLijst extends javax.swing.JFrame {
             }
         });
 
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Uitgiftepunt", "Deze week"
+            }
+        ));
+        jScrollPane2.setViewportView(jTable2);
+
+        DeleteRow.setText("Delete");
+        DeleteRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteRowActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(96, 96, 96)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 323, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(TransferRows, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                            .addComponent(DeleteRow, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton4))
-                .addContainerGap())
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addComponent(TransferRows)
+                                .addGap(33, 33, 33)
+                                .addComponent(DeleteRow)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton4)
+                    .addComponent(jButton2))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
     //Refresh Button
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void TransferRowsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransferRowsActionPerformed
 
-    
-//    Object[][] data = { {1,"1"},   {2,"2"},  {3,"3"},  {4, "4"}, {5, "5"}};
-//    String[] kolommen = {"OrderNr", "Naam uitgiftepunt", "Pakketten vorige week", "Verandering deze week", "Pakketten deze week"};
-//    final JTable tabel = new JTable(data, kolommen);
-//    
-//    tabel.setAutoCreateRowSorter(true); 
-//    
-//    JButton revert = new JButton("Refresh");
-//    revert.addActionListener( new ActionListener(){
-//     
-//        @Override public void actionPerformed(ActionEvent aEvent) {
-//         List<RowSorter.SortKey> SORT = Collections.emptyList();
-//         tabel.getRowSorter().setSortKeys(SORT);
-//       }
-//    });
+           
+        TableModel model1 = jTable1.getModel();
+            int[] indexs = jTable1.getSelectedRows();
+            Object[] row = new Object[4];
+            DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
+            for(int i = 0; i < indexs.length; i++){
+                row[0] = model1.getValueAt(indexs[i], 0);
+                row[1] = model1.getValueAt(indexs[i], 1);
+                row[2] = model1.getValueAt(indexs[i], 0);
+                row[3] = model1.getValueAt(indexs[i], 0);
+                model2.addRow(row);
+            }
     
     
         
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_TransferRowsActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
@@ -196,6 +240,14 @@ public class DistributieLijst extends javax.swing.JFrame {
             hs = new HomeScreen();
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void DeleteRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteRowActionPerformed
+       DefaultTableModel model2 = (DefaultTableModel) jTable2.getModel();
+       int SelectedRowIndex = jTable2.getSelectedRow();
+       model2.removeRow(SelectedRowIndex);
+       
+       
+    }//GEN-LAST:event_DeleteRowActionPerformed
 
     /**
      * @param args the command line arguments
@@ -234,10 +286,13 @@ public class DistributieLijst extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton DeleteRow;
+    private javax.swing.JButton TransferRows;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
