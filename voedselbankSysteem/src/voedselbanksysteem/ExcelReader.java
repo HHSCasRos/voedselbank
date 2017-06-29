@@ -3,11 +3,14 @@ package voedselbanksysteem;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Row;
 
@@ -47,7 +50,13 @@ public class ExcelReader {
                     //If it is formula cell, it will be evaluated otherwise no change will happen
                     switch (evaluator.evaluateInCell(cell).getCellType()){
                         case Cell.CELL_TYPE_NUMERIC:
-                            velden.add(cell.getNumericCellValue() + ", ");
+//                            if (DateUtil.isCellDateFormatted(cell)) {
+//                                SimpleDateFormat DtFormat = new SimpleDateFormat("yyyy/MM/dd");
+//                                Date date = cell.getDateCellValue();
+//                                velden.add(DtFormat.format(date) + ", ");
+//                            } else {
+                                velden.add(cell.getNumericCellValue() + ", ");
+//                            }
                             break;
                         case Cell.CELL_TYPE_STRING:
                             velden.add("'" + cell.getStringCellValue() + "', ");
