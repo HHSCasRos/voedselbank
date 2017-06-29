@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author Calvin Zeij
+ * @author Calvin Zeij, Cas Ros
  */
 public class MaximumCapaciteit extends javax.swing.JFrame {
     private HomeScreen opener;
@@ -140,7 +140,7 @@ public class MaximumCapaciteit extends javax.swing.JFrame {
         int capaciteit = Integer.parseInt(jTextPane1.getText());
         String naamUitgifte = jComboBox2.getSelectedItem().toString();
         System.out.println(naamUitgifte + " " + capaciteit);
-        JDBCDriver.updateUitgiftepunt(naamUitgifte ,capaciteit);
+        JDBCDriver.updateUitgiftepunt(naamUitgifte, capaciteit);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed

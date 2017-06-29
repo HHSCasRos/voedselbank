@@ -71,12 +71,12 @@ public class ExcelReader {
                 System.out.println ("Er is iets mis met de informatie van de excelfile");
             } else {
                 //move data from the temp table to the correct tables
-                System.out.println(JDBCDriver.setCliëntFromTemp());
                 System.out.println(JDBCDriver.setIntakerFromTemp());
-                System.out.println(JDBCDriver.setVoedselpakketFromTemp());
+//                System.out.println(JDBCDriver.setVoedselpakketFromTemp());
                 System.out.println(JDBCDriver.setHulpverlenendeInsantieFromTemp());
-                System.out.println(JDBCDriver.setIntakeFromTemp());
                 System.out.println(JDBCDriver.setUitgifteFromTemp());
+                System.out.println(JDBCDriver.setCliëntFromTemp());
+                System.out.println(JDBCDriver.setIntakeFromTemp());
                 System.out.println(JDBCDriver.setIdentiteitFromTemp());
             }
             file.close();

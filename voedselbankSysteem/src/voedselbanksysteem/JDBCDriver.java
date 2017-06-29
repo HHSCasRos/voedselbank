@@ -54,7 +54,10 @@ public class JDBCDriver {
             Connection connection;
             connection = getConnection();
             Statement sql = connection.createStatement();
-            String query = "UPDATE Uitgiftepunt SET maximumCapaciteit = " + nieuweWaarde + " WHERE Naam = " + naam;
+            String query = "UPDATE Uitgiftepunt SET maximumCapaciteit = " + nieuweWaarde + " WHERE Naam = '" + naam + "'";
+            
+            System.out.println(query);
+            
             aantal = sql.executeUpdate(query);
         }
         catch(SQLException e){
@@ -77,19 +80,12 @@ public class JDBCDriver {
             while(rs.next()){
                 jc.addItem(rs.getString(1));
             }
-            
-            
-            
-            
-            
-           
         }
         catch(SQLException e){
             e.getStackTrace();
         }
         finally{
             closeConnection();
-            
         }
     }
     
@@ -135,7 +131,7 @@ public class JDBCDriver {
             connection = getConnection();
             Statement sql = connection.createStatement();
             Statement insertsql = connection.createStatement();//statement 
-            String query = "SELECT kaartnummer, naam, telefoonnummer, mobiel, email, naamPartner, adres, postcode, plaats FROM temp";
+            String query = "SELECT kaartnummer, naam, telefoonnummer, mobiel, email, naamPartner, adres, postcode, plaats, Uitgiftepunt FROM temp";
             ResultSet executedQuery = sql.executeQuery(query);
             
             while(executedQuery.next()){
@@ -164,9 +160,10 @@ public class JDBCDriver {
                     "'" + partner[2] + "', " + 
                     "'" + executedQuery.getString(7) + "', " + 
                     "'" + executedQuery.getString(8) + "', " + 
-                    "'" + executedQuery.getString(9) + "')");
+                    "'" + executedQuery.getString(9) + "', " +
+                    "'" + executedQuery.getString(10) + "')");
                 
-                String insert = "INSERT IGNORE INTO Cliënt (kaartnr, voornaam, tussenvoegsel, achternaam, telefoonnr, mobielnr, email, partnetVoornaam, partnerTussenvoegsel, partnerAchternaam, adres, postcode, plaats) VALUES (";
+                String insert = "INSERT IGNORE INTO Cliënt (kaartnr, voornaam, tussenvoegsel, achternaam, telefoonnr, mobielnr, email, partnetVoornaam, partnerTussenvoegsel, partnerAchternaam, adres, postcode, plaats, toegewezenUitgiftepunt) VALUES (";
                 insert += cliënt.get(cliënt.size() - 1);
                 aantal += insertsql.executeUpdate(insert);
             }
@@ -347,40 +344,38 @@ public class JDBCDriver {
             return aantal;
         }
     }
-    public static int setVoedselpakketFromTemp(){
-        int aantal = 0;
-        ArrayList<String> voedselpakket = new ArrayList();
-        
-        try{
-            Connection connection;
-            connection = getConnection();
-            Statement sql = connection.createStatement();
-            Statement insertsql = connection.createStatement();//statement 
-            String query = "SELECT pakket FROM temp";
-            ResultSet executedQuery = sql.executeQuery(query);
-            
-            while(executedQuery.next()){
-                //change naam to voornaam, tussenvoegsel and achternaam
-               
-                
-                voedselpakket.add(
-                    "'" + executedQuery.getString(1) + "')");
-                
-                String insert = "INSERT IGNORE INTO Voedselpakket (soort) VALUES (";
-                insert += voedselpakket.get(voedselpakket.size() - 1);
-                aantal += insertsql.executeUpdate(insert);
-            }
-        }
-        catch(SQLException e){
-            e.getStackTrace();
-            System.out.println("Voedselpakket");
-        }
-        finally{
-            closeConnection();
-            System.out.println(voedselpakket.get(0));
-            return aantal;
-        }
-    }
+//    public static int setVoedselpakketFromTemp(){
+//        int aantal = 0;
+//        ArrayList<String> voedselpakket = new ArrayList();
+//        
+//        try{
+//            Connection connection;
+//            connection = getConnection();
+//            Statement sql = connection.createStatement();
+//            Statement insertsql = connection.createStatement();//statement 
+//            String query = "SELECT pakket, Uitgiftepunt FROM temp";
+//            ResultSet executedQuery = sql.executeQuery(query);
+//            
+//            while(executedQuery.next()){
+//                
+//                voedselpakket.add("'" + executedQuery.getString(1) + "', " + 
+//                    "'" + executedQuery.getString(2) + "')");
+//                
+//                String insert = "INSERT IGNORE INTO Voedselpakket (soort, uitgiftepunt) VALUES (";
+//                insert += voedselpakket.get(voedselpakket.size() - 1);
+//                aantal += insertsql.executeUpdate(insert);
+//            }
+//        }
+//        catch(SQLException e){
+//            e.getStackTrace();
+//            System.out.println("Voedselpakket");
+//        }
+//        finally{
+//            closeConnection();
+//            System.out.println(voedselpakket.get(0));
+//            return aantal;
+//        }
+//    }
     public static int setIdentiteitFromTemp(){
         int aantal = 0;
         ArrayList<String> identiteit = new ArrayList();
