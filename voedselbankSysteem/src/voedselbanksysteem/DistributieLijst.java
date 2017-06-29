@@ -48,7 +48,7 @@ public class DistributieLijst extends javax.swing.JFrame {
             // alle nummers van de collom
             ResultSetMetaData rsmetadata = rs.getMetaData();
             
-            int columns = rsmetadata.getColumnCount();
+            int columns = rsmetadata.getColumnCount()+ 1;
             
             DefaultTableModel dtm = new DefaultTableModel();
             Vector columns_name = new Vector();
