@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Vector;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static voedselbanksysteem.DatabaseSource.*;
 
@@ -409,5 +410,32 @@ public class JDBCDriver {
             System.out.println(identiteit.get(0));
             return aantal;
         }
+    }
+    public static void fillTable (ResultSet rs, JTable myTable) throws SQLException {
+        
+        ResultSetMetaData rsmetadata = rs.getMetaData();
+            
+            int columns = rsmetadata.getColumnCount() + 1;
+            
+            DefaultTableModel dtm = new DefaultTableModel();
+            Vector columns_name = new Vector();
+            Vector data_rows = new Vector();
+            
+           
+            for(int i= 1; i<columns; i++){
+            columns_name.addElement(rsmetadata.getColumnClassName(i));
+            }
+             dtm.setColumnIdentifiers(columns_name);
+             
+             while(rs.next()){
+                 
+                 data_rows = new Vector();
+                 for(int j = 1; j< columns; j++){
+                     data_rows.addElement(rs.getString(j));
+                 }
+                 dtm.addRow(data_rows);
+                     
+             }
+             myTable.setModel(dtm);
     }
 }

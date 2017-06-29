@@ -32,6 +32,7 @@ public class DistributieLijst extends javax.swing.JFrame {
     private Connection connection;
     private Statement statement;
     private ResultSet rs;
+    private JDBCDriver driver;
 
     /**
      * Creates new form DistributieLijst
@@ -46,30 +47,9 @@ public class DistributieLijst extends javax.swing.JFrame {
             String query = "Select * From Cliënt";
             rs = statement.executeQuery (query);
             // alle nummers van de collom
-            ResultSetMetaData rsmetadata = rs.getMetaData();
             
-            int columns = rsmetadata.getColumnCount()+ 1;
-            
-            DefaultTableModel dtm = new DefaultTableModel();
-            Vector columns_name = new Vector();
-            Vector data_rows = new Vector();
-            
-            for(int i= 1; i<columns; i++){
-            columns_name.addElement(rsmetadata.getColumnClassName(i));
-            }
-             dtm.setColumnIdentifiers(columns_name);
-             
-             while(rs.next()){
-                 
-                 data_rows = new Vector();
-                 for(int j = 1; j< columns; j++){
-                     data_rows.addElement(rs.getString(j));
-                 }
-                 dtm.addRow(data_rows);
-                     
-             }
-             jTable1.setModel(dtm);
-            
+            driver = new JDBCDriver();
+            JDBCDriver.fillTable(rs, jTable1);
             
             
             

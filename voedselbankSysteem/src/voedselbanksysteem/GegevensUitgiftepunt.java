@@ -29,6 +29,7 @@ public class GegevensUitgiftepunt extends javax.swing.JFrame {
     private Statement statement;
     private ResultSet rs;
     private HomeScreen opener;
+    private JDBCDriver driver;
     
     public GegevensUitgiftepunt() {
          try {
@@ -45,31 +46,9 @@ public class GegevensUitgiftepunt extends javax.swing.JFrame {
                                 "group by Uitgiftepunt;";
             rs = statement.executeQuery (query);
             // alle nummers van de collom
-            ResultSetMetaData rsmetadata = rs.getMetaData();
             
-            int columns = rsmetadata.getColumnCount() + 1;
-            
-            DefaultTableModel dtm = new DefaultTableModel();
-            Vector columns_name = new Vector();
-            Vector data_rows = new Vector();
-            
-           
-            for(int i= 1; i<columns; i++){
-            columns_name.addElement(rsmetadata.getColumnClassName(i));
-            }
-             dtm.setColumnIdentifiers(columns_name);
-             
-             while(rs.next()){
-                 
-                 data_rows = new Vector();
-                 for(int j = 1; j< columns; j++){
-                     data_rows.addElement(rs.getString(j));
-                 }
-                 dtm.addRow(data_rows);
-                     
-             }
-             myTable.setModel(dtm);
-             
+             driver = new JDBCDriver();
+             JDBCDriver.fillTable(rs, myTable);
              
             
             
