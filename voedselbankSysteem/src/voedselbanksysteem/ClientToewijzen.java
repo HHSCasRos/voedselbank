@@ -37,6 +37,10 @@ public class ClientToewijzen extends javax.swing.JFrame {
              driver = new JDBCDriver();
              JDBCDriver.fillTable(rs, jTable1);
              driver.getUitgiftepunten(jComboBox1);
+             jTable1.getColumnModel().getColumn(0).setHeaderValue("Kaartnummer");
+             jTable1.getColumnModel().getColumn(1).setHeaderValue("Voornaam");
+             jTable1.getColumnModel().getColumn(2).setHeaderValue("Tussenvoegsel");
+             jTable1.getColumnModel().getColumn(3).setHeaderValue("Achternaam");
              
             
             
@@ -90,7 +94,7 @@ public class ClientToewijzen extends javax.swing.JFrame {
                 {null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Client", "Title 2", "Title 3", "Title 4"
             }
         ));
         jScrollPane1.setViewportView(jTable1);

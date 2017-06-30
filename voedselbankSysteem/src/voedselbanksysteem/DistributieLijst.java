@@ -63,6 +63,8 @@ public class DistributieLijst extends javax.swing.JFrame {
             
             
             JDBCDriver.fillTable(rs, jTable1);
+            jTable1.getColumnModel().getColumn(0).setHeaderValue("Uitgiftepunt");
+            jTable1.getColumnModel().getColumn(1).setHeaderValue("Deze week");
             
             
             

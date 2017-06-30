@@ -52,7 +52,10 @@ public class GegevensUitgiftepunt extends javax.swing.JFrame {
             
              driver = new JDBCDriver();
              JDBCDriver.fillTable(rs, myTable);
-             
+             myTable.getColumnModel().getColumn(0).setHeaderValue("Uitgiftepunt");
+             myTable.getColumnModel().getColumn(1).setHeaderValue("Maximum Capaciteit");
+             myTable.getColumnModel().getColumn(2).setHeaderValue("Huidige cliënt");
+             myTable.getColumnModel().getColumn(3).setHeaderValue("Totaal pakketten");
             
             
             
@@ -112,7 +115,7 @@ public class GegevensUitgiftepunt extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(310, Short.MAX_VALUE)
+                .addContainerGap(357, Short.MAX_VALUE)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45))
             .addGroup(layout.createSequentialGroup()
